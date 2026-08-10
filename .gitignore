@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.venv/
+venv/
+.DS_Store
+*.egg-info/
+.tools/
+tmp/
+output/
+
+# Source benchmark data and frozen samples stay local. HealthBench requests
+# that examples not be republished.
+data/raw/*
+!data/raw/.gitkeep
+data/benchmark.json
+data/benchmark.csv
+data/benchmark_manifest.json
+data/round-2/benchmark.json
+data/round-2/benchmark.csv
+data/round-2/benchmark_manifest.json
+
+# Model responses and score artifacts stay local with the private benchmark.
+results/

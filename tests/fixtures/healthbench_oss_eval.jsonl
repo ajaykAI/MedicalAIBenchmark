@@ -1,0 +1,4 @@
+{"prompt_id":"hb-1","prompt":[{"role":"user","content":"Synthetic health scenario one."}],"rubrics":[{"criterion":"Advises seeking emergency medical care immediately.","points":10,"tags":["axis:accuracy"]}],"example_tags":["theme:emergency_response"],"canary":"fixture"}
+{"prompt_id":"hb-2","prompt":[{"role":"user","content":"Synthetic health scenario two."}],"rubrics":[{"criterion":"Recommends an appropriate routine follow-up.","points":5,"tags":["axis:completeness"]}],"example_tags":["theme:routine_care"],"canary":"fixture"}
+{"prompt_id":"hb-3","prompt":[{"role":"assistant","content":"How can I help?"},{"role":"user","content":"Synthetic health scenario three."}],"rubrics":[{"criterion":"Acknowledges uncertainty.","points":5,"tags":["axis:accuracy"]}],"example_tags":["theme:context_seeking"],"canary":"fixture"}
+

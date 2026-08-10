@@ -1,0 +1,4 @@
+{"id":"mq-1","question":"Synthetic question one?","answer":"Choice A","options":{"A":"Choice A","B":"Choice B","C":"Choice C","D":"Choice D"},"meta_info":"step1","answer_idx":"A"}
+{"id":"mq-2","question":"Synthetic question two?","answer":"Choice B","options":{"A":"Choice A","B":"Choice B","C":"Choice C","D":"Choice D"},"meta_info":"step2","answer_idx":"B"}
+{"id":"mq-3","question":"Synthetic question three?","answer":"Choice C","options":{"A":"Choice A","B":"Choice B","C":"Choice C","D":"Choice D"},"meta_info":"step3","answer_idx":"C"}
+

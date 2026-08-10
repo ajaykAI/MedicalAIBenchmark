@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Medical AI Benchmark — Results</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <h1>Medical AI Benchmark</h1>
+        <p class="hero__subtitle" id="hero-subtitle">
+          Compare two frozen benchmark rounds. This viewer does not call any model or
+          provide medical advice.
+        </p>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a class="site-nav__link is-active" href="/" aria-current="page">Results</a>
+          <a class="site-nav__link" href="/questions">Question Bank</a>
+        </nav>
+        <nav class="round-selector" id="round-selector" aria-label="Benchmark round"></nav>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="stats" aria-label="Benchmark summary">
+        <article class="stat stat--total">
+          <span class="stat__label">Total cases</span>
+          <strong class="stat__value" id="total-count">—</strong>
+        </article>
+        <article class="stat stat--medqa">
+          <span class="stat__label">MedQA</span>
+          <strong class="stat__value" id="medqa-count">—</strong>
+        </article>
+        <article class="stat stat--medmcqa">
+          <span class="stat__label">MedMCQA</span>
+          <strong class="stat__value" id="medmcqa-count">—</strong>
+        </article>
+        <article class="stat stat--health">
+          <span class="stat__label">HealthBench</span>
+          <strong class="stat__value" id="healthbench-count">—</strong>
+        </article>
+      </section>
+
+      <section class="evaluation" id="evaluation" aria-labelledby="results-title" hidden>
+        <div class="evaluation__header">
+          <div>
+            <div class="section-eyebrow">OBJECTIVE RESULTS</div>
+            <h2 id="results-title">Four-model closed-book comparison</h2>
+            <p id="results-description">Loading evaluation scope…</p>
+          </div>
+          <div class="evaluation__identity">
+            <span id="evaluation-model">—</span>
+          </div>
+        </div>
+
+        <div class="quality-notice" role="note">
+          <div>
+            <strong id="quality-title">Known source limitations</strong>
+            <span id="quality-description">Loading scoring exclusions…</span>
+          </div>
+          <div class="score-view" aria-label="Scoring view">
+            <button class="score-view__button" id="raw-view" type="button" aria-pressed="false">Raw</button>
+            <button class="score-view__button is-active" id="adjusted-view" type="button" aria-pressed="true">Adjusted</button>
+          </div>
+        </div>
+
+        <div class="comparison-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Pass 1</th>
+                <th scope="col">Pass 2</th>
+                <th scope="col">Mean</th>
+                <th scope="col">Consistency</th>
+                <th scope="col">Correct twice</th>
+              </tr>
+            </thead>
+            <tbody id="model-comparison"></tbody>
+          </table>
+        </div>
+
+        <section class="charts" aria-labelledby="charts-title">
+          <div class="charts__header">
+            <div>
+              <div class="section-eyebrow">PLOTLY OVERVIEW</div>
+              <h3 id="charts-title">Performance at a glance</h3>
+            </div>
+            <span id="chart-source">Loading response matrix…</span>
+          </div>
+          <div class="charts__grid">
+            <article class="chart-card">
+              <div class="chart-card__copy">
+                <h4>Accuracy by model</h4>
+                <p>Correct answers in each independent pass · dynamically zoomed scale.</p>
+              </div>
+              <div
+                class="plotly-chart"
+                id="accuracy-chart"
+                role="img"
+                aria-label="Grouped bar chart comparing pass 1 and pass 2 accuracy by model"
+              ></div>
+            </article>
+            <article class="chart-card">
+              <div class="chart-card__copy">
+                <h4>Repeatability by model</h4>
+                <p>Exact answer agreement and questions correct twice · dynamically zoomed scale.</p>
+              </div>
+              <div
+                class="plotly-chart"
+                id="repeatability-chart"
+                role="img"
+                aria-label="Grouped bar chart comparing answer consistency and correct-twice rate by model"
+              ></div>
+            </article>
+          </div>
+        </section>
+
+        <div class="selected-model">
+          <div>
+            <div class="section-eyebrow">SELECTED MODEL</div>
+            <h3 id="evaluation-title">—</h3>
+            <p id="evaluation-description">—</p>
+          </div>
+          <span class="selected-model__scope" id="evaluation-scope">—</span>
+        </div>
+
+        <div class="evaluation__metrics" aria-label="Selected model result metrics">
+          <article class="metric metric--primary">
+            <span class="metric__label">Pass 1 accuracy</span>
+            <strong class="metric__value" id="run-1-accuracy">—</strong>
+            <span class="metric__detail" id="run-1-detail">—</span>
+          </article>
+          <article class="metric">
+            <span class="metric__label">Pass 2 accuracy</span>
+            <strong class="metric__value" id="run-2-accuracy">—</strong>
+            <span class="metric__detail" id="run-2-detail">—</span>
+          </article>
+          <article class="metric">
+            <span class="metric__label">Answer consistency</span>
+            <strong class="metric__value" id="consistency">—</strong>
+            <span class="metric__detail" id="consistency-detail">—</span>
+          </article>
+          <article class="metric">
+            <span class="metric__label">Correct both times</span>
+            <strong class="metric__value" id="stable-correct">—</strong>
+            <span class="metric__detail" id="stable-correct-detail">—</span>
+          </article>
+        </div>
+
+        <div class="evaluation__lower">
+          <div class="dataset-results">
+            <div class="dataset-results__heading">
+              <h3>Objective performance by dataset</h3>
+              <span>Accuracy and exact answer agreement</span>
+            </div>
+            <div class="dataset-table-wrap">
+              <table class="dataset-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Dataset</th>
+                    <th scope="col">Run 1</th>
+                    <th scope="col">Run 2</th>
+                    <th scope="col">Consistency</th>
+                    <th scope="col">Correct twice</th>
+                  </tr>
+                </thead>
+                <tbody id="dataset-results"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <aside class="coverage-card">
+            <div class="coverage-card__icon" id="coverage-icon" aria-hidden="true">—</div>
+            <div>
+              <span class="coverage-card__label" id="coverage-label">Scope</span>
+              <strong id="coverage-title">—</strong>
+              <p id="coverage-description">—</p>
+            </div>
+          </aside>
+        </div>
+
+      </section>
+
+      <section class="rule-card" id="rule-card" aria-label="Evaluation rule" hidden>
+        <div class="rule-card__icon" aria-hidden="true">×</div>
+        <div>
+          <div class="rule-card__eyebrow">EVALUATION RULE</div>
+          <h2 id="rule-title"></h2>
+          <p id="rule-requirement"></p>
+          <div class="rule-card__details">
+            <div>
+              <strong>Not allowed</strong>
+              <ul id="rule-prohibited"></ul>
+            </div>
+            <div>
+              <strong>Required enforcement</strong>
+              <p id="rule-enforcement"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <script src="/vendor/plotly-basic-3.7.0.min.js" defer></script>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

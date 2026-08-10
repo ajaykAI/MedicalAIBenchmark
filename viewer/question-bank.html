@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Medical AI Benchmark — Question Bank</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="question-bank-page">
+    <header class="hero hero--compact">
+      <div class="hero__content">
+        <h1>Question Bank</h1>
+        <p class="hero__subtitle" id="bank-subtitle">
+          Search and inspect the frozen benchmark without leaving a compact workspace.
+        </p>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a class="site-nav__link" href="/">Results</a>
+          <a class="site-nav__link is-active" href="/questions" aria-current="page">Question Bank</a>
+        </nav>
+        <nav class="round-selector" id="round-selector" aria-label="Benchmark round"></nav>
+      </div>
+    </header>
+
+    <main class="shell question-bank-shell">
+      <section class="question-bank-panel" aria-label="Searchable question bank">
+        <div class="toolbar question-bank-toolbar" aria-label="Question filters">
+          <label class="search">
+            <span>Search questions</span>
+            <input id="search" type="search" placeholder="Question, category, qID, or answer choice…" />
+          </label>
+          <label>
+            <span>Dataset</span>
+            <select id="dataset-filter">
+              <option value="all">All datasets</option>
+              <option value="MedQA">MedQA</option>
+              <option value="MedMCQA">MedMCQA</option>
+              <option value="HealthBench">HealthBench</option>
+            </select>
+          </label>
+          <label>
+            <span>Category</span>
+            <select id="category-filter">
+              <option value="all">All categories</option>
+            </select>
+          </label>
+          <label>
+            <span>Model responses</span>
+            <select id="model-filter"></select>
+          </label>
+          <label class="answer-toggle">
+            <input id="show-answers" type="checkbox" />
+            <span>Show keys + responses</span>
+          </label>
+        </div>
+
+        <div class="results-line question-bank-results">
+          <span id="result-count">Loading questions…</span>
+          <button class="text-button" id="clear-filters" type="button">Clear filters</button>
+        </div>
+
+        <div class="question-bank__viewport" id="question-viewport" tabindex="0" aria-label="Scrollable questions">
+          <section class="question-list" id="question-list" aria-live="polite"></section>
+          <div class="empty-state" id="empty-state" hidden>
+            <strong>No cases match these filters.</strong>
+            <span>Try clearing the search or selecting another dataset.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <template id="objective-template">
+      <article class="case-card">
+        <div class="case-card__header">
+          <div class="case-card__tags"></div>
+          <span class="case-card__id"></span>
+        </div>
+        <h2 class="case-card__question"></h2>
+        <ol class="choices"></ol>
+        <div class="case-limitation" hidden></div>
+        <div class="answer-key" hidden></div>
+        <div class="case-results" hidden></div>
+      </article>
+    </template>
+
+    <template id="health-template">
+      <article class="case-card case-card--health">
+        <div class="case-card__header">
+          <div class="case-card__tags"></div>
+          <span class="case-card__id"></span>
+        </div>
+        <div class="conversation"></div>
+        <div class="health-result-note" hidden></div>
+        <details class="rubrics">
+          <summary>View physician rubric criteria</summary>
+          <div class="rubrics__list"></div>
+        </details>
+      </article>
+    </template>
+
+    <script src="/question-bank.js" defer></script>
+  </body>
+</html>

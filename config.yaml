@@ -1,0 +1,56 @@
+{
+  "benchmark": {
+    "schema_version": "1.0",
+    "random_seed": 42,
+    "counts": {
+      "MedQA": 30,
+      "MedMCQA": 10,
+      "HealthBench": 20
+    },
+    "evaluation_rules": [
+      {
+        "id": "closed_book_no_external_research",
+        "version": 1,
+        "title": "Closed-book reasoning only",
+        "requirement": "Each model must answer using only its own internal knowledge and reasoning.",
+        "prohibited": [
+          "Internet access",
+          "Web search or browsing",
+          "External retrieval, research, or reference tools",
+          "Opening links or consulting outside sources"
+        ],
+        "enforcement": "Every future runner must disable network access and all browsing, search, retrieval, and external research tools for the full run."
+      }
+    ]
+  },
+  "datasets": {
+    "MedQA": {
+      "source": "awinml/medqa",
+      "upstream": "jind11/MedQA",
+      "revision": "afdb980b627374a7f10a0a11ed68455596c52742",
+      "split": "test",
+      "file": "questions/test.jsonl",
+      "license": "MIT",
+      "raw_file": "data/raw/medqa_test_afdb980b.jsonl"
+    },
+    "MedMCQA": {
+      "source": "openlifescienceai/medmcqa",
+      "upstream": "medmcqa/medmcqa",
+      "revision": "91c6572c454088bf71b679ad90aa8dffcd0d5868",
+      "split": "validation",
+      "config": "default",
+      "license": "Apache-2.0",
+      "raw_file": "data/raw/medmcqa_validation_91c6572c.jsonl",
+      "split_note": "The public test split has cop=-1 (withheld labels), so the labeled validation split is required for automatic scoring."
+    },
+    "HealthBench": {
+      "source": "openai/healthbench",
+      "upstream": "openai/simple-evals",
+      "revision": "40ee1968852fc57f625934251ac22be47077a8fb",
+      "split": "test",
+      "file": "2025-05-07-06-14-12_oss_eval.jsonl",
+      "license": "MIT",
+      "raw_file": "data/raw/healthbench_oss_eval_40ee1968.jsonl"
+    }
+  }
+}
