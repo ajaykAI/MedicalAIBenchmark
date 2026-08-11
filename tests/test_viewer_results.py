@@ -152,7 +152,9 @@ class Round1ViewerResultsTest(unittest.TestCase):
         self.assertIn('"#00d5ff"', script)
         self.assertIn('"#ff4fd8"', script)
         self.assertIn("color-scheme: dark", styles)
-        self.assertIn("--canvas: #272b32", styles)
+        self.assertIn("--canvas: #171a1f", styles)
+        self.assertIn("--paper: #242830", styles)
+        self.assertIn('plot_bgcolor: "#1d2127"', script)
         self.assertGreater(plotly.stat().st_size, 1_000_000)
         self.assertIn("plotly.js (basic - minified) v3.7.0", plotly.read_text()[:200])
 

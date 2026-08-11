@@ -70,7 +70,7 @@ function chartTrace(name, values, color, categories) {
     cliponaxis: false,
     marker: {
       color,
-      line: { color: "#20242a", width: 1.5 },
+      line: { color: "#111419", width: 1.5 },
     },
     hovertemplate: `<b>%{x}</b><br>${name}: %{y:.1f}%<extra></extra>`,
   };
@@ -125,7 +125,7 @@ function renderCharts() {
     bargap: 0.25,
     bargroupgap: 0.08,
     paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "#30353d",
+    plot_bgcolor: "#1d2127",
     font: {
       family: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
       color: "#d9dee6",
@@ -156,11 +156,11 @@ function renderCharts() {
       ticksuffix: "%",
       automargin: true,
       fixedrange: true,
-      gridcolor: "#555e6b",
+      gridcolor: "#46515f",
       gridwidth: 1,
       zeroline: false,
     },
-    hoverlabel: { bgcolor: "#20242a", font: { color: "#ffffff" } },
+    hoverlabel: { bgcolor: "#171a1f", font: { color: "#ffffff" } },
   };
   const config = {
     responsive: true,
