@@ -1,4 +1,4 @@
-"""Run the frozen benchmark twice with GPT-5.6 Sol under a closed-book protocol.
+"""Run the frozen benchmark twice with GPT-6 Astra under a closed-book protocol.
 
 Gold answers and HealthBench rubrics are used only after generation by the local
 scorer. They are never serialized into the model prompt or its isolated working
@@ -19,10 +19,11 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 from src.benchmark import load_benchmark
 from src.io_utils import read_json, sha256_bytes, write_csv, write_json
-from src.schemas import ALLOWED_ANSWERS, BenchmarkCase
+from src.models import GPT
+from src.schemas import ALLOWED_ANSWERS, BenchmarkCase, answer_labels_for_cases
 
 
-MODEL = "gpt-5.6-sol"
+MODEL = GPT["model"]
 REASONING_EFFORT = "high"
 RUN_COUNT = 2
 OBJECTIVE_FIELDS = [
@@ -86,17 +87,23 @@ Return only the structured response required by the supplied output schema.
 
 BENCHMARK CASES (contains no answer key or scoring rubric):
 """
+    labels = {label for row in blind_payload.get("objective_questions", []) for label in row["choices"]}
+    if labels - ALLOWED_ANSWERS:
+        instructions = instructions.replace(
+            "return exactly one option label: A, B, C, or D.",
+            "return exactly one option label from that question's supplied choices (A–J for MedXpertQA).",
+        )
     return instructions + json.dumps(
         blind_payload, ensure_ascii=False, separators=(",", ":")
     )
 
 
-def response_schema() -> Dict[str, Any]:
+def response_schema(answer_labels: Sequence[str] = ("A", "B", "C", "D")) -> Dict[str, Any]:
     answer_item = {
         "type": "object",
         "properties": {
             "id": {"type": "string"},
-            "answer": {"type": "string", "enum": ["A", "B", "C", "D"]},
+            "answer": {"type": "string", "enum": sorted(set(answer_labels))},
             "confidence": {"type": "integer", "minimum": 0, "maximum": 100},
         },
         "required": ["id", "answer", "confidence"],
@@ -142,9 +149,17 @@ def codex_command(codex: str, schema_path: Path) -> List[str]:
         "--config",
         'forced_login_method="chatgpt"',
         "--config",
-        'model_reasoning_effort="high"',
+        'model_reasoning_effort="%s"' % REASONING_EFFORT,
         "--config",
         'approval_policy="never"',
+        "--config",
+        "features.memories=false",
+        "--config",
+        "memories.use_memories=false",
+        "--config",
+        "memories.generate_memories=false",
+        "--config",
+        "project_doc_max_bytes=0",
         "--config",
         'web_search="disabled"',
         "--config",
@@ -161,6 +176,8 @@ def codex_command(codex: str, schema_path: Path) -> List[str]:
         "features.skill_mcp_dependency_install=false",
         "--config",
         "features.apps=false",
+        "--config",
+        "features.plugins=false",
         "--config",
         "features.computer_use=false",
         "--config",
@@ -195,6 +212,10 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     final_text = None
     transport_warnings = []
     turn_completed = False
+    allowed_events = {
+        "thread.started", "turn.started", "turn.completed", "turn.failed", "error",
+        "item.started", "item.updated", "item.completed",
+    }
     for line_number, line in enumerate(stdout.splitlines(), start=1):
         if not line.strip():
             continue
@@ -206,6 +227,11 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
             raise RunnerError("Codex event %d is not an object" % line_number)
         events.append(event)
         event_type = str(event.get("type", ""))
+        if event_type not in allowed_events:
+            raise RunnerError(
+                "Closed-book protocol violation: unrecognized Codex event %s"
+                % event_type
+            )
         if event_type == "turn.failed":
             raise RunnerError("Codex reported a failed run: %s" % event)
         if event_type == "error":
@@ -213,6 +239,8 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         if event_type == "turn.completed":
             turn_completed = True
         item = event.get("item")
+        if event_type.startswith("item.") and not isinstance(item, dict):
+            raise RunnerError("Codex item event is missing its auditable item")
         if isinstance(item, dict):
             item_type = str(item.get("type", "unknown"))
             item_types[item_type] += 1
@@ -285,12 +313,23 @@ def load_saved_run(
             raise RunnerError("Saved run %d metadata does not match" % run_number)
         audit = saved.get("closed_book_audit")
         response = saved.get("responses")
-        if not isinstance(audit, dict) or not audit.get("closed_book_valid"):
+        if (
+            not isinstance(audit, dict)
+            or audit.get("closed_book_valid") is not True
+            or audit.get("forbidden_tool_events") != 0
+        ):
             raise RunnerError("Saved run %d failed its closed-book audit" % run_number)
         if not isinstance(response, dict):
             raise RunnerError("Saved run %d has no response object" % run_number)
         validate_response(response, cases)
-        return response, audit
+        if not events_path.is_file():
+            raise RunnerError("Saved run %d is missing its tool event log" % run_number)
+        logged_response, verified_audit = parse_event_stream(
+            events_path.read_text(encoding="utf-8")
+        )
+        if logged_response != response:
+            raise RunnerError("Saved run %d differs from its event log" % run_number)
+        return response, verified_audit
 
     if not events_path.exists():
         raise FileNotFoundError(str(events_path))
@@ -346,8 +385,9 @@ def validate_response(
     health = _unique_rows(
         response.get("healthbench_responses"), health_ids, "healthbench_responses"
     )
+    choices_by_id = {case.id: case.choices for case in cases if case.is_objective}
     for case_id, row in objective.items():
-        if row.get("answer") not in ALLOWED_ANSWERS:
+        if row.get("answer") not in choices_by_id[case_id]:
             raise RunnerError("Invalid objective answer for %s" % case_id)
         confidence = row.get("confidence")
         if isinstance(confidence, bool) or not isinstance(confidence, int):
@@ -376,7 +416,7 @@ def run_once(
     with tempfile.TemporaryDirectory(prefix="medical-benchmark-blind-") as name:
         isolated = Path(name)
         schema_path = isolated / "response_schema.json"
-        write_json(schema_path, response_schema())
+        write_json(schema_path, response_schema(answer_labels_for_cases(cases)))
         completed = subprocess.run(
             codex_command(codex, schema_path),
             input=prompt,
@@ -476,6 +516,8 @@ def run_benchmark(
     codex: str,
     timeout_seconds: int,
 ) -> Dict[str, Any]:
+    if "medxpert-hard100" in str(benchmark_path):
+        raise RunnerError("MedXpert collection requires --answer-only and questions.json; legacy scoring is disabled for this packet")
     artifact, cases = load_benchmark(benchmark_path)
     require_chatgpt_auth(codex)
     blind_payload = build_blind_payload(cases)
@@ -553,7 +595,7 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         "--benchmark", type=Path, default=Path("data/benchmark.json")
     )
     parser.add_argument(
-        "--output-dir", type=Path, default=Path("results/gpt-5.6-sol")
+        "--output-dir", type=Path, default=Path("results") / GPT["directory"]
     )
     parser.add_argument("--codex", default=shutil.which("codex") or "codex")
     parser.add_argument("--timeout-seconds", type=int, default=3600)
@@ -561,6 +603,12 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    import sys
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if "--answer-only" in argv:
+        from src.collect_medxpert_answers import main as collect_answers
+        argv.remove("--answer-only")
+        return collect_answers(["--provider", "gpt", *argv])
     args = parse_args(argv)
     summary = run_benchmark(
         args.benchmark,

@@ -1,0 +1,1482 @@
+{
+  "created_date": "2026-10-22",
+  "display_name": "MedXpertQA Text — Curated Hard 100",
+  "method": {
+    "answer_keys_used_for_selection": false,
+    "content_reviewed_rows": 288,
+    "eligible_reasoning_rows": 1860,
+    "empirical_difficulty_ranking": false,
+    "limitations": [
+      "Not proven to be the hardest 100 of the full dataset. Screening can miss difficult short questions.",
+      "No per-item model error rates were found in the inspected official release. Complexity scores only prioritize review.",
+      "Curation is subjective and can favor the selector’s reasoning style.",
+      "Original keys are preserved, not independently clinically revalidated or updated to 2026 guidelines.",
+      "This is an exam-style MCQ subset, not a patient-facing clinical safety or real-world outcome evaluation.",
+      "Public dataset exposure during model training cannot be ruled out."
+    ],
+    "reviewer": "Codex AI-assisted content review; no new clinician review",
+    "scope": "Reasoning-labelled text-only multiple-choice questions. Broad body-system coverage; no fixed final quotas.",
+    "screened_rows": 2450,
+    "screening_version": "clinical-complexity-screen-v1",
+    "selection_basis": [
+      "Integration of multiple findings or competing explanations",
+      "Treatment constraints, timing, adverse effects, or diagnostic sequencing",
+      "Discrimination among plausible options",
+      "Exclude lower-priority recall and apparent ambiguity or data-quality problems"
+    ],
+    "shortlist_per_body_system": 24,
+    "target_model_results_used_for_selection": false
+  },
+  "presentation_seed": 20261022,
+  "question_count": 100,
+  "review_records": [
+    {
+      "decision": "selected",
+      "reason": "Balance disease-modifying cardiac therapy against persistent electrolyte abnormalities and kidney disease.",
+      "source_id": "Text-1487"
+    },
+    {
+      "decision": "selected",
+      "reason": "Prioritize a new abdominal deterioration in a neonate with complex cardiac physiology.",
+      "source_id": "Text-1750"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose hemodynamic support using perfusion findings, initial treatment response, and cardiac comorbidity.",
+      "source_id": "Text-1900"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish indications for additional rhythm or rate intervention from risk-factor management.",
+      "source_id": "Text-1910"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Potentially overlapping accepted antimicrobial regimens; excluded without changing the source key.",
+      "source_id": "Text-1200"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-442"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate procedure timing, imaging, and competing thoracic emergencies.",
+      "source_id": "Text-712"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Potentially overlapping anticoagulant choices without sufficient discriminating context.",
+      "source_id": "Text-751"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-761"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret a cardiac biomarker in dialysis and choose an appropriate diagnostic sequence.",
+      "source_id": "Text-1286"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2104"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2374"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose further evaluation after treatment failure while accounting for immunosuppression.",
+      "source_id": "Text-1597"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate liver disease stage with complementary complication-screening strategies.",
+      "source_id": "Text-211"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use severity, organ dysfunction, and drug delivery route to select a regimen.",
+      "source_id": "Text-1651"
+    },
+    {
+      "decision": "selected",
+      "reason": "Reconcile atypical symptoms, cardiovascular risk, and initially negative tests.",
+      "source_id": "Text-1359"
+    },
+    {
+      "decision": "selected",
+      "reason": "Prioritize investigation of progressive alarm symptoms amid rehabilitation and nutritional explanations.",
+      "source_id": "Text-1460"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret prior viral serology together with immunosuppressive treatment and new liver injury.",
+      "source_id": "Text-685"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2122"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Possible inconsistency between undetectable viral RNA and an answer set limited to antiviral regimens.",
+      "source_id": "Text-2184"
+    },
+    {
+      "decision": "selected",
+      "reason": "Select rescue therapy after failure of two distinct eradication regimens.",
+      "source_id": "Text-1839"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2003"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Potentially overlapping dietary and formula options.",
+      "source_id": "Text-2327"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-301"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret adrenal-axis testing in the context of prolonged glucocorticoid exposure and dose reduction.",
+      "source_id": "Text-305"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-14"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2371"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance biochemical and imaging findings against symptom burden and life stage.",
+      "source_id": "Text-996"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate transfusion history, iron indices, organ findings, and treatment constraints.",
+      "source_id": "Text-2437"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret discordant thyroid measurements during essential antiarrhythmic treatment.",
+      "source_id": "Text-960"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate acid-base findings, urine chemistry, stone composition, and autoimmune disease.",
+      "source_id": "Text-1248"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-114"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2098"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2360"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-259"
+    },
+    {
+      "decision": "selected",
+      "reason": "Individualize metabolic treatment using frailty, weight loss, cognition, and renal function.",
+      "source_id": "Text-347"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2272"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use age, epidemiology, and lesion evolution to choose evaluation after the acute treatment window.",
+      "source_id": "Text-536"
+    },
+    {
+      "decision": "selected",
+      "reason": "Determine antimicrobial treatment intensity and duration using clearance, source control, and implanted material.",
+      "source_id": "Text-2076"
+    },
+    {
+      "decision": "selected",
+      "reason": "Connect immune status and local disease burden to the scope of oncologic treatment.",
+      "source_id": "Text-1272"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1063"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1251"
+    },
+    {
+      "decision": "selected",
+      "reason": "Prioritize empiric treatment in an unstable patient with a deep diabetic foot infection.",
+      "source_id": "Text-2368"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-607"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1052"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1305"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1431"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-544"
+    },
+    {
+      "decision": "selected",
+      "reason": "Sequence investigation and stabilization for mediastinal disease with venous obstruction.",
+      "source_id": "Text-1447"
+    },
+    {
+      "decision": "selected",
+      "reason": "Connect infection history, potentially misleading serology, and an acute transfusion reaction.",
+      "source_id": "Text-1602"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1672"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1660"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Several options appear to be plausible empiric antipseudomonal regimens.",
+      "source_id": "Text-2073"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-796"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish preventive treatment from empiric treatment during chemotherapy-associated neutropenia.",
+      "source_id": "Text-1430"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Potential overlap between confirmatory diagnostic tests.",
+      "source_id": "Text-1696"
+    },
+    {
+      "decision": "selected",
+      "reason": "Investigate transfusion refractoriness after considering nonimmune explanations.",
+      "source_id": "Text-1846"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-891"
+    },
+    {
+      "decision": "selected",
+      "reason": "Select surveillance according to prior cancer treatment, dose, elapsed time, and current findings.",
+      "source_id": "Text-1144"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Several listed drugs can plausibly cause the described adverse reaction.",
+      "source_id": "Text-1397"
+    },
+    {
+      "decision": "selected",
+      "reason": "Sequence confirmation and associated-disease evaluation from a neuromuscular and skin presentation.",
+      "source_id": "Text-2286"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1174"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Potentially overlapping biologic treatment choices.",
+      "source_id": "Text-1617"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-837"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1098"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1766"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-446"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-460"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use renal function, electrolytes, acid-base status, and urine output to avoid unsupported escalation.",
+      "source_id": "Text-2425"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-403"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret synovial fluid and crystal morphology in relation to a recent procedure.",
+      "source_id": "Text-2376"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1102"
+    },
+    {
+      "decision": "selected",
+      "reason": "Account for cumulative nephrotoxic exposures when adding treatment in kidney disease.",
+      "source_id": "Text-709"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1698"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate hepatic laboratory findings and extrahepatic signs to select confirmatory testing.",
+      "source_id": "Text-1670"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1353"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2250"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-763"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret an acute acid-base disturbance using its time course and clinical context.",
+      "source_id": "Text-1494"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Insufficient discrimination among contemporary inflammatory demyelinating diagnoses.",
+      "source_id": "Text-2097"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2294"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Concern about imaging timing and evolving diagnostic recommendations.",
+      "source_id": "Text-2415"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use sensory distribution and tempo to distinguish competing metabolic, inflammatory, and systemic causes.",
+      "source_id": "Text-728"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1424"
+    },
+    {
+      "decision": "selected",
+      "reason": "Reassess an initially negative diagnostic test using exposure timing and clinical deterioration.",
+      "source_id": "Text-666"
+    },
+    {
+      "decision": "selected",
+      "reason": "Apply the scope of a patient-confirmed directive when a surrogate requests broader treatment.",
+      "source_id": "Text-1075"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2023"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1771"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-933"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate severity, withdrawal history, patient goals, and pharmacologic harm reduction.",
+      "source_id": "Text-1596"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1503"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1454"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-831"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose a systems intervention that changes the opportunity for a resuscitation medication error.",
+      "source_id": "Text-1356"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Overlapping terminology for bias in the answer choices.",
+      "source_id": "Text-2381"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1402"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1112"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose the next investigation after persistent postoperative fever despite broad treatment.",
+      "source_id": "Text-917"
+    },
+    {
+      "decision": "selected",
+      "reason": "Infer a primary malignancy using metastatic distribution, histology, and deceptively normal imaging.",
+      "source_id": "Text-2160"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish multiple normal gestational changes from findings needing intervention.",
+      "source_id": "Text-1509"
+    },
+    {
+      "decision": "selected",
+      "reason": "Prioritize acute bleeding control while recognizing evidence of an underlying hemostatic disorder.",
+      "source_id": "Text-1516"
+    },
+    {
+      "decision": "selected",
+      "reason": "Infer treatment-related deterioration using renal impairment and evolving neurologic findings.",
+      "source_id": "Text-1956"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-71"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-191"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1962"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance a treatable adverse effect against cardiorenal benefits of ongoing therapy.",
+      "source_id": "Text-306"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1023"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1284"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret pleural-fluid studies and the limitations of an initially negative malignancy evaluation.",
+      "source_id": "Text-37"
+    },
+    {
+      "decision": "selected",
+      "reason": "Reassess the cause of shock after an invasive procedure using discriminating chest findings.",
+      "source_id": "Text-900"
+    },
+    {
+      "decision": "selected",
+      "reason": "Explain persistent tachypnea after improvement of obstruction using treatment effects and acid-base data.",
+      "source_id": "Text-2183"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish a confirmed pathological process from an indication for invasive symptom-directed treatment.",
+      "source_id": "Text-25"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-826"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate illness severity, possible infection sources, exposure history, structural lung disease, and allergy.",
+      "source_id": "Text-894"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Multiple statements about statistical errors appear true.",
+      "source_id": "Text-724"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1417"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance suspected organ toxicity with ongoing need for arrhythmia protection.",
+      "source_id": "Text-153"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose imaging using pretest probability, renal function, and chest radiograph findings.",
+      "source_id": "Text-1640"
+    },
+    {
+      "decision": "selected",
+      "reason": "Weigh misleading cardiac biomarkers against examination and response to prior treatment.",
+      "source_id": "Text-1080"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1854"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-620"
+    },
+    {
+      "decision": "selected",
+      "reason": "Investigate a monoclonal protein finding using symptoms and competing end-organ assessments.",
+      "source_id": "Text-1692"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-226"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Several listed complications appear compatible with the named disease.",
+      "source_id": "Text-1351"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2328"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-286"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use breakthrough analgesic requirements, route feasibility, and cachexia to adjust therapy.",
+      "source_id": "Text-1731"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose the diagnostic sequence for progressive spinal disease after a procedure in an immunosuppressed patient.",
+      "source_id": "Text-2080"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2093"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-68"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Potential overlap between a biochemical mechanism and its stated cause.",
+      "source_id": "Text-954"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1324"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-559"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Donation eligibility is jurisdiction- and policy-dependent; current applicability uncertain.",
+      "source_id": "Text-862"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1888"
+    },
+    {
+      "decision": "selected",
+      "reason": "Weigh symptoms and biochemical complications against filtration rate when deciding whether to initiate dialysis.",
+      "source_id": "Text-601"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use the onset and mechanism of a water-balance disturbance to choose replacement and correction timing.",
+      "source_id": "Text-1758"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2232"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Concern about consistency of renal-function values and duplicated options.",
+      "source_id": "Text-548"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-374"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1713"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Multiple answer choices describe recognized complications.",
+      "source_id": "Text-1763"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1499"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance multiple urine abnormalities and urine pH when selecting recurrent-stone prevention.",
+      "source_id": "Text-1700"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-295"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-503"
+    },
+    {
+      "decision": "selected",
+      "reason": "Select vascular investigation after transient symptoms resolve while accounting for advanced renal impairment.",
+      "source_id": "Text-291"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Explicitly asks for a historical 2014 guideline framework.",
+      "source_id": "Text-1020"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1046"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish cause-specific management of secondary hypertension using vascular morphology and disease location.",
+      "source_id": "Text-1220"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1384"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1493"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1775"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Perioperative bridging recommendations may vary with guideline and patient risk.",
+      "source_id": "Text-2409"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-32"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret a treatment-emergent laboratory abnormality in relation to severity and therapeutic benefit.",
+      "source_id": "Text-773"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1257"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1128"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1461"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate geography, nutrient deficiencies, serology, and biopsy to choose therapy for malabsorption.",
+      "source_id": "Text-1571"
+    },
+    {
+      "decision": "selected",
+      "reason": "Reconcile severe hepatitis with detailed viral markers and competing exposure histories.",
+      "source_id": "Text-1783"
+    },
+    {
+      "decision": "selected",
+      "reason": "Prioritize investigation of an acute complication during deterioration of chronic inflammatory bowel disease.",
+      "source_id": "Text-2017"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-419"
+    },
+    {
+      "decision": "selected",
+      "reason": "Connect cumulative treatment dose to a structural intestinal complication amid several competing exposures.",
+      "source_id": "Text-617"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-704"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-766"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-997"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1310"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-3"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-549"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1961"
+    },
+    {
+      "decision": "selected",
+      "reason": "Combine tonicity, potassium depletion, initial resuscitation, and pediatric context to choose ongoing fluids.",
+      "source_id": "Text-2343"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-482"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use calcium-regulatory hormone patterns and multisystem findings to select mechanism-directed treatment.",
+      "source_id": "Text-492"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish medication-associated biochemical disease from indications for localization or surgery.",
+      "source_id": "Text-583"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-593"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Potentially inconsistent electrolyte and acid-base values.",
+      "source_id": "Text-669"
+    },
+    {
+      "decision": "selected",
+      "reason": "Interpret persistent endocrine and electrolyte abnormalities shortly after restoration of renal function.",
+      "source_id": "Text-690"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2028"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1072"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-453"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1917"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1531"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1595"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-368"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-639"
+    },
+    {
+      "decision": "selected",
+      "reason": "Apply drug-structure and allergy distinctions across several therapeutic classes.",
+      "source_id": "Text-1573"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Several listed antimicrobial options may be effective without susceptibility discrimination.",
+      "source_id": "Text-1840"
+    },
+    {
+      "decision": "selected",
+      "reason": "Select the appropriate emergency drug, concentration, dose, and route for a child.",
+      "source_id": "Text-2407"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-50"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-884"
+    },
+    {
+      "decision": "selected",
+      "reason": "Connect hematologic disease, skin pathology, and a specific acquired coagulation abnormality.",
+      "source_id": "Text-2336"
+    },
+    {
+      "decision": "selected",
+      "reason": "Risk-stratify chemotherapy-associated fever to select treatment setting and antimicrobial scope.",
+      "source_id": "Text-542"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2146"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-664"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1094"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Overlapping syndrome and molecular-cause options.",
+      "source_id": "Text-2435"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1506"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-188"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-449"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-941"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Several molecular causes fit the described broad immune phenotype.",
+      "source_id": "Text-1508"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1580"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1746"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1594"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1111"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1361"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use examination findings and the degree of inflammatory-marker elevation to distinguish competing shoulder disorders.",
+      "source_id": "Text-1972"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1104"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1227"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-236"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1161"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1166"
+    },
+    {
+      "decision": "selected",
+      "reason": "Prioritize investigation and stabilization of traumatic bleeding during anticoagulant treatment.",
+      "source_id": "Text-787"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1223"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2185"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1458"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish competing ototoxic exposures using renal changes and reversibility over time.",
+      "source_id": "Text-1474"
+    },
+    {
+      "decision": "selected",
+      "reason": "Sequence imaging and lumbar puncture after urgent treatment in the presence of a new seizure.",
+      "source_id": "Text-2254"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-318"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-504"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-471"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance imaging sensitivity and contrast considerations at the specified level of kidney function.",
+      "source_id": "Text-1012"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1633"
+    },
+    {
+      "decision": "selected",
+      "reason": "Weigh symptom behavior against strong competing vascular risk factors to choose a diagnostic test.",
+      "source_id": "Text-260"
+    },
+    {
+      "decision": "selected",
+      "reason": "Connect newborn screening, neuroimaging, metabolites, and nutrition to a disease-specific intervention.",
+      "source_id": "Text-348"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-421"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-454"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2369"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1244"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-910"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Reported household case totals exceed the supplied household population.",
+      "source_id": "Text-1134"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1282"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-35"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish emergency treatment authority for a child from an adult patient’s treatment refusal.",
+      "source_id": "Text-517"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-877"
+    },
+    {
+      "decision": "selected",
+      "reason": "Weigh age at onset and maternal history when distinguishing competing causes of neonatal infection.",
+      "source_id": "Text-912"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-270"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-686"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-718"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance structural anatomy, bleeding severity, and future fertility when selecting treatment.",
+      "source_id": "Text-1452"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Several listed antibodies fit the suspected syndrome.",
+      "source_id": "Text-1631"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1960"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2299"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2408"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose treatment after an unrevealing workup while accounting for prior treatment failure and contraindications.",
+      "source_id": "Text-642"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate gestational timing, tumor receptors, and stage when selecting cancer treatment.",
+      "source_id": "Text-1148"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Duplicate or substantively equivalent correct-looking intervention bundles.",
+      "source_id": "Text-1608"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1610"
+    },
+    {
+      "decision": "selected",
+      "reason": "Recognize a new pregnancy-related emergency despite a distracting seizure and psychiatric history.",
+      "source_id": "Text-2340"
+    },
+    {
+      "decision": "selected",
+      "reason": "Sequence evaluation of sensitization using gestational age, prior exposure, and paternal genotype.",
+      "source_id": "Text-765"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1751"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-314"
+    },
+    {
+      "decision": "selected",
+      "reason": "Reconsider pathogen coverage after sequential treatment failures and progressive respiratory compromise.",
+      "source_id": "Text-1083"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1338"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1752"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Multiple options contain the same recommended bronchodilator classes.",
+      "source_id": "Text-2188"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-646"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-701"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1079"
+    },
+    {
+      "decision": "selected",
+      "reason": "Choose further testing after persistent focal findings despite normal conventional imaging and physiology.",
+      "source_id": "Text-991"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use acid-base compensation and current ventilator settings to identify the required respiratory adjustment.",
+      "source_id": "Text-1622"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-234"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-568"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1739"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance fracture history, treatment duration, and serial bone density when considering a treatment holiday.",
+      "source_id": "Text-407"
+    },
+    {
+      "decision": "selected",
+      "reason": "Localize an isolated biochemical abnormality before choosing an imaging strategy.",
+      "source_id": "Text-494"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-585"
+    },
+    {
+      "decision": "selected",
+      "reason": "Integrate hormonal abnormalities with site-specific skeletal effects beyond routine risk estimates.",
+      "source_id": "Text-1065"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1568"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2102"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Duplicated drug options and several plausible symptom treatments.",
+      "source_id": "Text-481"
+    },
+    {
+      "decision": "selected",
+      "reason": "Balance infection control and spinal stability after recent instrumented surgery.",
+      "source_id": "Text-605"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-827"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-95"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1463"
+    },
+    {
+      "decision": "selected",
+      "reason": "Distinguish medication effects on bladder emptying from effects on urine production using symptom timing.",
+      "source_id": "Text-782"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-872"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2036"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use age, urine findings, and pain distribution to select the next investigation for hematuria.",
+      "source_id": "Text-2187"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1296"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-2169"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-753"
+    },
+    {
+      "decision": "selected",
+      "reason": "Identify findings inconsistent with uncomplicated chronic kidney disease and choose additional evaluation.",
+      "source_id": "Text-1358"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Lower priority or possible item-quality concern on AI content review; not retained for the hard subset.",
+      "source_id": "Text-1532"
+    },
+    {
+      "decision": "exclude",
+      "reason": "Substantively overlapping response options recommending further imaging.",
+      "source_id": "Text-1899"
+    },
+    {
+      "decision": "selected",
+      "reason": "Use graft-function trajectory and ultrasound to distinguish structural postoperative complications from rejection.",
+      "source_id": "Text-2346"
+    },
+    {
+      "decision": "selected",
+      "reason": "Calculate the acid-base disturbance and connect it to medication exposure and renal clearance.",
+      "source_id": "Text-2391"
+    }
+  ],
+  "selection_id": "medxpertqa-text-hard100-v1",
+  "source": {
+    "dataset": "TsinghuaC3I/MedXpertQA",
+    "file": "Text/test.jsonl",
+    "revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+    "row_count": 2450,
+    "sha256": "07ea977f7e326909b51c883b65f6ad7f399fc6db07408ef3630f4e3048ec71b2"
+  }
+}

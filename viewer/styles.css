@@ -57,6 +57,17 @@ h1 { margin: 9px 0 8px; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05;
 .stat__label { display: block; color: var(--muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
 .stat__value { display: block; margin-top: 7px; font-size: 2.25rem; letter-spacing: -0.04em; }
 
+.model-lineup { margin-top: 24px; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.model-lineup h2 { margin: 6px 0; font-size: 1.3rem; }
+.model-lineup > p { margin: 0 0 18px; color: var(--muted); font-size: 0.84rem; line-height: 1.5; }
+.model-lineup__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.model-lineup__card { padding: 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 9px; }
+.model-lineup__card h3 { margin: 0 0 10px; font-size: 0.95rem; }
+.model-lineup__status { color: var(--blue); font-size: 0.8rem; }
+.model-lineup__card p { margin: 8px 0 0; color: var(--muted); font-size: 0.75rem; line-height: 1.5; }
+.model-lineup__button { margin-top: 12px; padding: 7px 10px; color: var(--ink); background: var(--surface-raised); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+.model-lineup__button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
 .evaluation { margin-top: 22px; overflow: hidden; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
 .evaluation[hidden] { display: none; }
 .evaluation__header { display: flex; justify-content: space-between; align-items: flex-start; gap: 28px; padding: 26px 28px 22px; background: linear-gradient(135deg, #303640 0%, #243330 100%); border-bottom: 1px solid var(--line); }

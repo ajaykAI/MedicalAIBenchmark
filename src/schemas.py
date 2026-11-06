@@ -7,8 +7,13 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 
 SCHEMA_VERSION = "1.0"
-OBJECTIVE_DATASETS = {"MedQA", "MedMCQA"}
 ALLOWED_ANSWERS = {"A", "B", "C", "D"}
+DATASET_ANSWER_LABELS = {
+    "MedQA": ALLOWED_ANSWERS,
+    "MedMCQA": ALLOWED_ANSWERS,
+    "MedXpertQA": set("ABCDEFGHIJ"),
+}
+OBJECTIVE_DATASETS = set(DATASET_ANSWER_LABELS)
 
 
 class SchemaError(ValueError):
@@ -65,11 +70,12 @@ class BenchmarkCase:
         _nonempty_string(self.category, "category")
         _nonempty_string(self.question, "question")
         if self.is_objective:
-            if not isinstance(self.choices, dict) or set(self.choices) != ALLOWED_ANSWERS:
-                raise SchemaError("%s must have exactly choices A-D" % self.id)
+            labels = DATASET_ANSWER_LABELS[self.dataset]
+            if not isinstance(self.choices, dict) or set(self.choices) != labels:
+                raise SchemaError("%s must have exactly choices %s" % (self.id, ", ".join(sorted(labels))))
             for label, text in self.choices.items():
                 _nonempty_string(text, "%s.choices.%s" % (self.id, label))
-            if self.correct_answer not in ALLOWED_ANSWERS:
+            if self.correct_answer not in labels:
                 raise SchemaError("%s has an invalid correct_answer" % self.id)
             if self.conversation is not None or self.rubrics is not None:
                 raise SchemaError("%s mixes objective and HealthBench fields" % self.id)
@@ -128,6 +134,11 @@ class BenchmarkCase:
         )
         case.validate()
         return case
+
+
+def answer_labels_for_cases(cases: Sequence[BenchmarkCase]) -> List[str]:
+    labels = {label for case in cases if case.is_objective for label in (case.choices or {})}
+    return sorted(labels or ALLOWED_ANSWERS)
 
 
 def validate_benchmark_cases(cases: Sequence[BenchmarkCase]) -> None:

@@ -1,4 +1,4 @@
-"""Run the 40 objective cases twice with Claude Fable 5, closed book."""
+"""Run the 40 objective cases twice with Claude Opus 5.5, closed book."""
 
 from __future__ import annotations
 
@@ -15,10 +15,11 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 from src.benchmark import load_benchmark
 from src.io_utils import read_json, sha256_bytes, write_csv, write_json
-from src.schemas import ALLOWED_ANSWERS, BenchmarkCase
+from src.models import CLAUDE
+from src.schemas import ALLOWED_ANSWERS, BenchmarkCase, answer_labels_for_cases
 
 
-MODEL = "claude-fable-5"
+MODEL = CLAUDE["model"]
 REASONING_EFFORT = "high"
 RUN_COUNT = 2
 RESULT_FIELDS = [
@@ -72,10 +73,16 @@ Mandatory rules:
 
 OBJECTIVE QUESTIONS (contains no answer key or source metadata):
 """
+    labels = {label for row in payload.get("objective_questions", []) for label in row["choices"]}
+    if labels - ALLOWED_ANSWERS:
+        instructions = instructions.replace(
+            "Return exactly one option label (A, B, C, or D) for each question.",
+            "Return exactly one option label from each question's supplied choices (A–J for MedXpertQA).",
+        )
     return instructions + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
 
 
-def response_schema() -> Dict[str, Any]:
+def response_schema(answer_labels: Sequence[str] = ("A", "B", "C", "D")) -> Dict[str, Any]:
     return {
         "type": "object",
         "properties": {
@@ -87,7 +94,7 @@ def response_schema() -> Dict[str, Any]:
                         "id": {"type": "string"},
                         "answer": {
                             "type": "string",
-                            "enum": ["A", "B", "C", "D"],
+                            "enum": sorted(set(answer_labels)),
                         },
                         "confidence": {
                             "type": "integer",
@@ -152,7 +159,7 @@ def require_subscription_auth(claude: str) -> Dict[str, Any]:
     return status
 
 
-def claude_command(claude: str) -> List[str]:
+def claude_command(claude: str, answer_labels: Sequence[str] = ("A", "B", "C", "D")) -> List[str]:
     system_prompt = (
         "You are a closed-book benchmark respondent. Use internal reasoning only. "
         "Never request or invoke tools or external information."
@@ -183,7 +190,7 @@ def claude_command(claude: str) -> List[str]:
         "stream-json",
         "--verbose",
         "--json-schema",
-        json.dumps(response_schema(), separators=(",", ":")),
+        json.dumps(response_schema(answer_labels), separators=(",", ":")),
     ]
 
 
@@ -196,13 +203,7 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     result_event: Optional[Dict[str, Any]] = None
     formatting_tool_events = 0
     structured_output_ids = set()
-    forbidden_content_types = {
-        "tool_use",
-        "server_tool_use",
-        "web_search_tool_result",
-        "tool_result",
-        "mcp_tool_use",
-    }
+    allowed_events = {"system", "assistant", "user", "result", "rate_limit_event"}
 
     for line_number, line in enumerate(stdout.splitlines(), start=1):
         if not line.strip():
@@ -218,10 +219,27 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         events.append(event)
         event_type = str(event.get("type", "unknown"))
         event_types[event_type] += 1
+        if event_type not in allowed_events:
+            raise ClaudeRunnerError(
+                "Closed-book protocol violation: unrecognized Claude event %s"
+                % event_type
+            )
 
-        if event_type == "system" and event.get("subtype") == "init":
+        if event_type == "system":
+            if event.get("subtype") != "init" or initialized_tools is not None:
+                raise ClaudeRunnerError("Unexpected Claude system event")
             tools = event.get("tools")
-            initialized_tools = list(tools) if isinstance(tools, list) else None
+            if not isinstance(tools, list):
+                raise ClaudeRunnerError("Claude initialization omitted its tool list")
+            initialized_tools = list(tools)
+            if any(tool != "StructuredOutput" for tool in initialized_tools):
+                raise ClaudeRunnerError(
+                    "Closed-book protocol violation: external tools were available"
+                )
+            if event.get("mcp_servers"):
+                raise ClaudeRunnerError(
+                    "Closed-book protocol violation: MCP servers were configured"
+                )
             reported_model = str(event.get("model", "")) or None
 
         message = event.get("message")
@@ -230,7 +248,7 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
             if isinstance(content, list):
                 for block in content:
                     if not isinstance(block, dict):
-                        continue
+                        raise ClaudeRunnerError("Malformed Claude content block")
                     block_type = block.get("type")
                     if block_type == "tool_use" and block.get("name") == "StructuredOutput":
                         formatting_tool_events += 1
@@ -242,11 +260,38 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
                         and block.get("tool_use_id") in structured_output_ids
                     ):
                         continue
-                    if block_type in forbidden_content_types:
+                    if block_type not in {"text", "thinking", "redacted_thinking"}:
                         raise ClaudeRunnerError(
                             "Closed-book protocol violation: Claude emitted %s (%s)"
                             % (block_type, block.get("name", "unnamed"))
                         )
+
+        # Provider-side searches may be visible only in usage, even if the
+        # corresponding content block is missing from the CLI transcript.
+        usages = [event.get("usage")]
+        if isinstance(message, dict):
+            usages.append(message.get("usage"))
+        model_usage = event.get("modelUsage")
+        if isinstance(model_usage, dict):
+            usages.extend(model_usage.values())
+        for usage in usages:
+            if not isinstance(usage, dict):
+                continue
+            server_tools = usage.get("server_tool_use", {})
+            if not isinstance(server_tools, dict) or any(
+                count != 0 for count in server_tools.values()
+            ):
+                raise ClaudeRunnerError(
+                    "Closed-book protocol violation: server tool usage was reported"
+                )
+            for key in (
+                "web_search_requests", "web_fetch_requests",
+                "webSearchRequests", "webFetchRequests",
+            ):
+                if usage.get(key, 0) != 0:
+                    raise ClaudeRunnerError(
+                        "Closed-book protocol violation: %s was reported" % key
+                    )
 
         if event_type == "result":
             result_event = event
@@ -273,7 +318,7 @@ def parse_event_stream(stdout: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         )
     if result_event is None or response is None:
         raise ClaudeRunnerError("Claude stream did not contain a completed response")
-    if reported_model and reported_model != MODEL:
+    if reported_model != MODEL:
         raise ClaudeRunnerError(
             "Claude reported model %s instead of %s" % (reported_model, MODEL)
         )
@@ -300,6 +345,7 @@ def validate_response(
     if not isinstance(rows, list):
         raise ClaudeRunnerError("objective_answers must be an array")
     expected = {case.id for case in objective_cases(cases)}
+    choices_by_id = {case.id: case.choices for case in objective_cases(cases)}
     indexed: Dict[str, Dict[str, Any]] = {}
     for row in rows:
         if not isinstance(row, dict) or not isinstance(row.get("id"), str):
@@ -307,7 +353,7 @@ def validate_response(
         case_id = row["id"]
         if case_id in indexed:
             raise ClaudeRunnerError("Duplicate objective answer: %s" % case_id)
-        if row.get("answer") not in ALLOWED_ANSWERS:
+        if row.get("answer") not in (choices_by_id.get(case_id) or {}):
             raise ClaudeRunnerError("Invalid answer for %s" % case_id)
         confidence = row.get("confidence")
         if (
@@ -394,7 +440,7 @@ def run_once(
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     with tempfile.TemporaryDirectory(prefix="medical-benchmark-claude-blind-") as name:
         completed = subprocess.run(
-            claude_command(claude),
+            claude_command(claude, answer_labels_for_cases(cases)),
             input=prompt,
             capture_output=True,
             text=True,
@@ -443,10 +489,17 @@ def load_saved_run(
         audit = saved.get("closed_book_audit")
         if not isinstance(response, dict) or not isinstance(audit, dict):
             raise ClaudeRunnerError("Saved run %d is malformed" % run_number)
-        if not audit.get("closed_book_valid") or audit.get("forbidden_tool_events") != 0:
+        if audit.get("closed_book_valid") is not True or audit.get("forbidden_tool_events") != 0:
             raise ClaudeRunnerError("Saved run %d failed its closed-book audit" % run_number)
         validate_response(response, cases)
-        return response, audit
+        if not events_path.is_file():
+            raise ClaudeRunnerError("Saved run %d is missing its tool event log" % run_number)
+        logged_response, verified_audit = parse_event_stream(
+            events_path.read_text(encoding="utf-8")
+        )
+        if logged_response != response:
+            raise ClaudeRunnerError("Saved run %d differs from its event log" % run_number)
+        return response, verified_audit
     if events_path.exists():
         response, audit = parse_event_stream(events_path.read_text(encoding="utf-8"))
         validate_response(response, cases)
@@ -461,6 +514,8 @@ def run_benchmark(
     claude: str,
     timeout_seconds: int,
 ) -> Dict[str, Any]:
+    if "medxpert-hard100" in str(benchmark_path):
+        raise ClaudeRunnerError("MedXpert collection requires --answer-only and questions.json; legacy scoring is disabled for this packet")
     artifact, cases = load_benchmark(benchmark_path)
     auth = require_subscription_auth(claude)
     prompt = build_prompt(build_blind_payload(cases))
@@ -536,7 +591,7 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         "--benchmark", type=Path, default=Path("data/benchmark.json")
     )
     parser.add_argument(
-        "--output-dir", type=Path, default=Path("results/claude-fable-5")
+        "--output-dir", type=Path, default=Path("results") / CLAUDE["directory"]
     )
     parser.add_argument("--claude", default=shutil.which("claude") or "claude")
     parser.add_argument("--timeout-seconds", type=int, default=3600)
@@ -544,6 +599,12 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    import sys
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if "--answer-only" in argv:
+        from src.collect_medxpert_answers import main as collect_answers
+        argv.remove("--answer-only")
+        return collect_answers(["--provider", "claude", *argv])
     args = parse_args(argv)
     summary = run_benchmark(
         args.benchmark,

@@ -17,13 +17,14 @@ from urllib.parse import parse_qs, urlparse
 from src.benchmark import load_benchmark
 from src.config import PROJECT_ROOT
 from src.io_utils import read_json
+from src.models import CURRENT_MODELS
 
 
 LOGGER = logging.getLogger("medical_benchmark.viewer")
 VIEWER_ROOT = PROJECT_ROOT / "viewer"
 DEFAULT_ROUND_SLUG = "combined"
 DEFAULT_RESULTS_SLUG = "grok-4.5-fast"
-RESULT_SPECS = (
+HISTORICAL_RESULT_SPECS = (
     {
         "slug": "gpt-5.6-sol",
         "directory": "gpt-5.6-sol",
@@ -42,6 +43,7 @@ RESULT_SPECS = (
     },
     {
         "slug": "gemini-3.6-flash",
+        "model": "gemini-3.6-flash-high",
         "directory": "gemini-3.6-flash",
         "display_name": "Gemini 3.6 Flash",
         "reasoning_label": "High reasoning",
@@ -57,6 +59,7 @@ RESULT_SPECS = (
         "audit_label": "Manual entry",
     },
 )
+RESULT_SPECS = CURRENT_MODELS + HISTORICAL_RESULT_SPECS
 RESPONSE_COLUMNS = {
     "gpt-5.6-sol": ("GPT Pass 1", "GPT Pass 2"),
     "claude-fable-5": ("Fable Pass 1", "Fable Pass 2"),
@@ -413,6 +416,9 @@ def _load_combined_results_payload() -> Dict[str, Any]:
     ]
     models = []
     for spec in RESULT_SPECS:
+        # A combined score requires this exact model in both rounds.
+        if not all(spec["slug"] in indexed for indexed in models_by_round):
+            continue
         combined_rows: List[Dict[str, Any]] = []
         summary: Dict[str, Any] = {}
         offset = 0
@@ -444,6 +450,7 @@ def _load_combined_results_payload() -> Dict[str, Any]:
             row for row in combined_rows if not row["excluded_from_adjusted"]
         ]
         combined_spec = dict(spec)
+        combined_spec["historical"] = spec in HISTORICAL_RESULT_SPECS
         if combined_spec["collection_method"] == "automated":
             combined_spec["audit_label"] = "4/4 audits passed"
         models.append(
@@ -460,7 +467,7 @@ def _load_combined_results_payload() -> Dict[str, Any]:
     offset = 0
     for payload in round_payloads:
         source_round = payload["round"]["slug"]
-        round_count = payload["models"][0]["raw"]["objective"]["question_count"]
+        round_count = payload["response_source"]["question_count"]
         for limitation in payload["known_limitations"]:
             source_qid = int(limitation["qid"])
             known_limitations.append(
@@ -483,12 +490,15 @@ def _load_combined_results_payload() -> Dict[str, Any]:
             for key in ("slug", "display_name", "subtitle")
         },
         "default_score_view": COMBINED_ROUND_SPEC["default_score_view"],
-        "default_model_slug": DEFAULT_RESULTS_SLUG,
+        "default_model_slug": _default_result_slug(models),
+        "current_models": _current_model_status(round_payloads),
         "response_source": {
             "kind": "combined validated result sources",
-            "source_file": "Round 1 response matrix + Round 2 result archives",
+            "source_file": "Round 1 validated sources + Round 2 result archives",
             "sha256": _combined_digest(*source_hashes),
-            "question_count": 80,
+            "question_count": sum(
+                payload["response_source"]["question_count"] for payload in round_payloads
+            ),
         },
         "models": models,
         "known_limitations": known_limitations,
@@ -514,10 +524,20 @@ def load_results_payload(round_slug: str = DEFAULT_ROUND_SLUG) -> Dict[str, Any]
     for spec in RESULT_SPECS:
         root = round_spec["results_root"] / spec["directory"]
         result_path = root / "objective_results.csv"
+        summary_path = root / "summary.json"
+        if spec in CURRENT_MODELS and not (
+            result_path.exists() and summary_path.exists()
+        ):
+            continue
         archive_digest.update(spec["slug"].encode("utf-8"))
         archive_digest.update(b"\0")
         archive_digest.update(result_path.read_bytes())
-        summary = read_json(root / "summary.json")
+        summary = read_json(summary_path)
+        expected_model = spec.get("model", spec["slug"])
+        if summary.get("model") != expected_model:
+            raise ValueError("%s model ID mismatch" % spec["slug"])
+        if spec in CURRENT_MODELS:
+            _validate_current_summary(summary, spec)
         if summary.get("benchmark_id") != artifact.get("benchmark_id"):
             raise ValueError("%s benchmark ID mismatch" % spec["slug"])
         if summary.get("protocol_id") != artifact.get("protocol_id"):
@@ -525,7 +545,7 @@ def load_results_payload(round_slug: str = DEFAULT_ROUND_SLUG) -> Dict[str, Any]
         rows = _load_result_rows(
             result_path,
             objective_cases,
-            matrix["models"][spec["slug"]] if matrix is not None else None,
+            matrix["models"].get(spec["slug"]) if matrix is not None else None,
             limitations,
         )
         raw = _score_view(rows)
@@ -549,13 +569,16 @@ def load_results_payload(round_slug: str = DEFAULT_ROUND_SLUG) -> Dict[str, Any]
         models.append(
             {
                 **spec,
+                "historical": spec in HISTORICAL_RESULT_SPECS,
                 "summary": public_summary,
                 "raw": raw,
                 "adjusted": adjusted,
                 "objective_results": rows,
             }
         )
-    if matrix is not None:
+    current_slugs = {spec["slug"] for spec in CURRENT_MODELS}
+    has_current_results = any(model["slug"] in current_slugs for model in models)
+    if matrix is not None and not has_current_results:
         response_source = {
             "kind": "response matrix",
             "source_file": matrix["source_file"],
@@ -565,8 +588,14 @@ def load_results_payload(round_slug: str = DEFAULT_ROUND_SLUG) -> Dict[str, Any]
     else:
         response_source = {
             "kind": "per-model result archives",
-            "source_file": "results/%s/*/objective_results.csv" % round_slug,
-            "sha256": archive_digest.hexdigest(),
+            "source_file": (
+                "results/*/objective_results.csv + historical response matrix"
+                if matrix is not None else "results/%s/*/objective_results.csv" % round_slug
+            ),
+            "sha256": (
+                _combined_digest(matrix["sha256"], archive_digest.hexdigest())
+                if matrix is not None else archive_digest.hexdigest()
+            ),
             "question_count": len(objective_sequence),
         }
     return {
@@ -576,7 +605,8 @@ def load_results_payload(round_slug: str = DEFAULT_ROUND_SLUG) -> Dict[str, Any]
             "subtitle": round_spec["subtitle"],
         },
         "default_score_view": round_spec["default_score_view"],
-        "default_model_slug": DEFAULT_RESULTS_SLUG,
+        "default_model_slug": _default_result_slug(models),
+        "current_models": _current_model_status([{"models": models}]),
         "response_source": response_source,
         "models": models,
         "known_limitations": [
@@ -586,6 +616,45 @@ def load_results_payload(round_slug: str = DEFAULT_ROUND_SLUG) -> Dict[str, Any]
             )
         ],
     }
+
+
+def _default_result_slug(models: Sequence[Mapping[str, Any]]) -> Optional[str]:
+    available = {model["slug"] for model in models}
+    fallback = DEFAULT_RESULTS_SLUG if DEFAULT_RESULTS_SLUG in available else next(iter(available), None)
+    return next(
+        (spec["slug"] for spec in CURRENT_MODELS if spec["slug"] in available),
+        fallback,
+    )
+
+
+def _current_model_status(round_payloads: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+    """Keep pending targets visible without manufacturing scores or audit claims."""
+    available = [{model["slug"] for model in payload["models"]} for payload in round_payloads]
+    targets = []
+    for spec in CURRENT_MODELS:
+        completed = sum(spec["slug"] in slugs for slugs in available)
+        status = "completed" if completed == len(available) else "partial" if completed else "pending"
+        targets.append({
+            **{key: value for key, value in spec.items() if key != "audit_label"},
+            "status": status,
+            "completed_rounds": completed,
+            "required_rounds": len(available),
+        })
+    return targets
+
+
+def _validate_current_summary(summary: Mapping[str, Any], spec: Mapping[str, str]) -> None:
+    if summary.get("run_count") != 2:
+        raise ValueError("%s requires two completed passes" % spec["slug"])
+    if spec["collection_method"] == "automated":
+        audits = summary.get("closed_book_audits")
+        if not isinstance(audits, list) or len(audits) != 2 or not all(
+            isinstance(audit, dict) and audit.get("closed_book_valid") is True
+            and audit.get("forbidden_tool_events") == 0 for audit in audits
+        ):
+            raise ValueError("%s requires two valid closed-book audits" % spec["slug"])
+        if summary.get("reasoning_effort") != "high":
+            raise ValueError("%s reasoning effort mismatch" % spec["slug"])
 
 
 class ViewerHandler(BaseHTTPRequestHandler):

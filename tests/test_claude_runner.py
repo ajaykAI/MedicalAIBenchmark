@@ -5,6 +5,7 @@ import unittest
 
 from src.run_claude_benchmark import (
     ClaudeRunnerError,
+    MODEL,
     build_blind_payload,
     parse_event_stream,
     score_runs,
@@ -69,7 +70,7 @@ class ClaudeRunnerTest(unittest.TestCase):
                         "type": "system",
                         "subtype": "init",
                         "tools": [],
-                        "model": "claude-fable-5",
+                        "model": MODEL,
                     }
                 ),
                 json.dumps(
@@ -103,7 +104,7 @@ class ClaudeRunnerTest(unittest.TestCase):
                         "type": "system",
                         "subtype": "init",
                         "tools": ["StructuredOutput"],
-                        "model": "claude-fable-5",
+                        "model": MODEL,
                     }
                 ),
                 json.dumps(
@@ -158,7 +159,7 @@ class ClaudeRunnerTest(unittest.TestCase):
                         "type": "system",
                         "subtype": "init",
                         "tools": [],
-                        "model": "claude-fable-5",
+                        "model": MODEL,
                     }
                 ),
                 json.dumps(

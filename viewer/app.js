@@ -16,6 +16,8 @@ const elements = {
   medmcqaCount: document.querySelector("#medmcqa-count"),
   healthbenchCount: document.querySelector("#healthbench-count"),
   evaluation: document.querySelector("#evaluation"),
+  modelLineup: document.querySelector("#model-lineup"),
+  currentModels: document.querySelector("#current-models"),
   resultsTitle: document.querySelector("#results-title"),
   resultsDescription: document.querySelector("#results-description"),
   qualityTitle: document.querySelector("#quality-title"),
@@ -216,6 +218,43 @@ function setScoreView(view) {
   populateEvaluation();
 }
 
+function populateCurrentModels() {
+  elements.currentModels.replaceChildren();
+  for (const model of state.resultsPayload.current_models || []) {
+    const card = document.createElement("article");
+    card.className = "model-lineup__card";
+    const title = document.createElement("h3");
+    title.textContent = model.display_name;
+    const status = document.createElement("strong");
+    status.className = "model-lineup__status";
+    status.textContent = model.status === "completed"
+      ? "Results available"
+      : model.status === "partial"
+        ? `${model.completed_rounds}/${model.required_rounds} rounds complete`
+        : "Awaiting results";
+    const detail = document.createElement("p");
+    detail.textContent = model.collection_method === "manual"
+      ? "Manual collection"
+      : model.reasoning_label;
+    card.append(title, status, detail);
+    if (model.availability_note) {
+      const note = document.createElement("p");
+      note.textContent = model.availability_note;
+      card.append(note);
+    }
+    if (state.models.has(model.slug)) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "model-lineup__button";
+      button.textContent = "View results";
+      button.addEventListener("click", () => selectModel(model.slug));
+      card.append(button);
+    }
+    elements.currentModels.append(card);
+  }
+  elements.modelLineup.hidden = false;
+}
+
 function populateRoundPresentation() {
   const round = activeRound();
   const firstModel = state.models.values().next().value;
@@ -227,7 +266,7 @@ function populateRoundPresentation() {
   elements.heroSubtitle.textContent = round.slug === "combined"
     ? `${round.subtitle}. The individual rounds remain available for auditability.`
     : `${round.subtitle}. Review this sample independently or return to the combined reporting view.`;
-  elements.resultsTitle.textContent = `${round.display_name} · four-model closed-book comparison`;
+  elements.resultsTitle.textContent = `${round.display_name} · recorded closed-book results`;
   elements.resultsDescription.textContent = `Two independent passes over the same ${rawCount} frozen objective questions. The adjusted reporting view applies identical exclusions to every model.`;
   elements.rawView.textContent = `Raw · ${rawCount}`;
   elements.adjustedView.textContent = `Adjusted · ${adjustedCount}`;
@@ -265,7 +304,7 @@ function populateComparison() {
     const label = document.createElement("strong");
     label.textContent = model.display_name;
     const method = document.createElement("span");
-    method.textContent = "Closed-book run";
+    method.textContent = model.historical ? "Historical model version" : "Current model version";
     button.append(label, method);
     button.addEventListener("click", () => selectModel(model.slug));
     name.append(button);
@@ -424,6 +463,7 @@ async function loadRound(roundSlug) {
   state.selectedRoundSlug = roundSlug;
   updateRoundButtons();
   elements.evaluation.hidden = true;
+  elements.modelLineup.hidden = true;
   try {
     const query = encodeURIComponent(roundSlug);
     const [benchmark, resultsPayload] = await Promise.all([
@@ -436,10 +476,13 @@ async function loadRound(roundSlug) {
     state.models = new Map(resultsPayload.models.map((model) => [model.slug, model]));
     state.selectedModelSlug = resultsPayload.default_model_slug;
     state.scoreView = resultsPayload.default_score_view;
-    const model = selectedModel();
-    if (!model) throw new Error("Default model results are unavailable");
     document.title = `${resultsPayload.round.display_name} · Medical AI Benchmark`;
     populateSummary();
+    populateCurrentModels();
+    if (!state.models.size) {
+      elements.heroSubtitle.textContent = `${activeRound().subtitle}. Awaiting completed model runs.`;
+      return;
+    }
     populateRoundPresentation();
     setScoreView(state.scoreView);
   } catch (error) {

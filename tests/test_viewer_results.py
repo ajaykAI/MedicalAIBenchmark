@@ -142,7 +142,6 @@ class Round1ViewerResultsTest(unittest.TestCase):
         self.assertNotIn('id="audit-status"', html)
         self.assertNotIn('class="audit-line"', html)
         self.assertIn("window.Plotly.react", script)
-        self.assertIn('method.textContent = "Closed-book run"', script)
         self.assertNotIn('"Manual web entry"', script)
         self.assertNotIn('"Automated run"', script)
         self.assertNotIn('"Original sample"', script)

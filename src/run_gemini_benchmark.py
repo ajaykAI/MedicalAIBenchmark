@@ -1,4 +1,4 @@
-"""Run the 40 objective cases twice with Gemini 3.6 Flash (High), closed book.
+"""Run the 40 objective cases twice with Gemini 4 Argon (High), closed book.
 
 The model receives only question IDs, question text, and A-D choices. Gold
 answers are introduced only after both independent generations finish.
@@ -19,11 +19,12 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 from src.benchmark import load_benchmark
 from src.io_utils import read_json, sha256_bytes, write_csv, write_json
+from src.models import GEMINI
 from src.schemas import ALLOWED_ANSWERS, BenchmarkCase
 
 
-MODEL = "gemini-3.6-flash-high"
-MODEL_DISPLAY_NAME = "Gemini 3.6 Flash (High)"
+MODEL = GEMINI["model"]
+MODEL_DISPLAY_NAME = GEMINI["runner_display_name"]
 REASONING_EFFORT = "high"
 RUN_COUNT = 2
 RESULT_FIELDS = [
@@ -737,7 +738,7 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--benchmark", type=Path, default=Path("data/benchmark.json"))
     parser.add_argument(
-        "--output-dir", type=Path, default=Path("results/gemini-3.6-flash")
+        "--output-dir", type=Path, default=Path("results") / GEMINI["directory"]
     )
     parser.add_argument("--agy", default=shutil.which("agy") or "agy")
     parser.add_argument("--timeout-seconds", type=int, default=3600)

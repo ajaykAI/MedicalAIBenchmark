@@ -20,6 +20,7 @@ data/benchmark_manifest.json
 data/round-2/benchmark.json
 data/round-2/benchmark.csv
 data/round-2/benchmark_manifest.json
+data/medxpert-hard100/
 
 # Model responses and score artifacts stay local with the private benchmark.
 results/
